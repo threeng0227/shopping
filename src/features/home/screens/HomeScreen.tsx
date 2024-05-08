@@ -28,15 +28,19 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
     const [visible, setVisible] = useState(false);
 
     const _onAdd = useCallback((value: any) => {
-        const newItem = {
-            description: value.description,
-            title: value.title,
-            isChoose: false,
-            tax: value.tax,
-            price: value.price,
-            id: Math.random() + 1,
-        };
-        setItems(prevItems => [newItem, ...prevItems]);
+        refModalLoading.current?.showModal?.();
+        setTimeout(() => {
+            const newItem = {
+                description: value.description,
+                title: value.title,
+                isChoose: false,
+                tax: value.tax,
+                price: value.price,
+                id: Math.random() + 1,
+            };
+            setItems(prevItems => [newItem, ...prevItems]);
+            refModalLoading.current?.hideModal?.();
+        }, 300);
     }, []);
 
     const _onEdit = useCallback((item: any) => {
@@ -62,7 +66,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                             dispatch(setCartInfor(currentCart?.filter(x => x.id !== value.id)));
                         }
                         refModalLoading.current?.hideModal?.();
-                    }, 300); 
+                    }, 300);
                 }
             },
         ]);
@@ -151,7 +155,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                     onEdit={_onEdit}
                     onDelete={_onDeleted}
                 />}
-                ListFooterComponent={() => <ActivityIndicator color={Colors.red} size={'small'}  style={{marginVertical: 16}}/>}
+                ListFooterComponent={() => <ActivityIndicator color={Colors.red} size={'small'} style={{ marginVertical: 16 }} />}
             />
 
             <TouchableOpacity
@@ -179,7 +183,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                 onAdd={_onAdd}
                 onEdit={_onChange}
             />
-            <ModalLoading ref={refModalLoading}/>
+            <ModalLoading ref={refModalLoading} />
         </View>
     );
 }

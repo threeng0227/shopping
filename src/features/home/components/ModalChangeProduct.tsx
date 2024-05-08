@@ -38,24 +38,25 @@ const ModalChangeProduct = (({
 
     const _onSubmit = (values: typeof initState) => {
         setVisible(false);
-        data ?
-            onEdit({
-                description: values.description,
-                title: values.title,
-                isChoose: false,
-                tax: values.tax,
-                price: values.price,
-                id: data.id,
-            })
-            :
-            onAdd({
-                description: values.description,
-                title: values.title,
-                isChoose: false,
-                tax: values.tax,
-                price: values.price
-            })
-
+        setTimeout(() => {
+            data ?
+                onEdit({
+                    description: values.description,
+                    title: values.title,
+                    isChoose: false,
+                    tax: values.tax,
+                    price: values.price,
+                    id: data.id,
+                })
+                :
+                onAdd({
+                    description: values.description,
+                    title: values.title,
+                    isChoose: false,
+                    tax: values.tax,
+                    price: values.price
+                })
+        }, 300);
     };
     return (
         <Modal
