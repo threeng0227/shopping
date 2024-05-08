@@ -1,6 +1,5 @@
-
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Alert, View, Text, FlatList, StyleSheet, TextInput, Platform } from 'react-native';
+import { Alert, View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
 import { StackScreenProps } from "@react-navigation/stack";
 import { HomeParamsList } from "domain/types/Navigation";
 import { useAppSelector } from "redux/store/hooks";
@@ -14,7 +13,6 @@ import { ButtonComponent } from "../components/ButtonComponent";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CartItem } from "../components/CartItem";
 import { store } from "redux/store";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
     const dispatch = useDispatch();
@@ -35,7 +33,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
         return 0;
     }, [carts]);
 
-    const onRemoveProductFromCart = useCallback((item: any) => {
+    const _onRemoveProductFromCart = useCallback((item: any) => {
         Alert.alert('Message', 'Are you sure you want to DELETE?', [
             {
                 text: 'Cancel',
@@ -58,7 +56,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
         if (user?.name) {
             dispatch(setOrdersInfor({
                 data: carts,
-                discount: discount
+                discount: refInputValue.current
             }));
             NavigationService.replace('OrderDetailScreen', {});
             dispatch(setCartInfor([]));
@@ -66,25 +64,24 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
             Alert.alert('Please Register!')
         }
 
-    }
+    };
 
     const _onChange = (e: any) => {
         refInputValue.current = e;
-    }
+    };
 
     const _onBlur = () => {
         setDiscount(refInputValue.current);
-    }
+    };
 
-    const onChangeQuantity = useCallback((
-        item: any,
+    const _onChangeQuantity = useCallback((
         index: number,
         type: 'minus' | 'add',
     ) => {
         const currentCart = [...store.getState().user.carts ?? []];
         if (type === 'minus' && currentCart[index]?.quantity > 0) {
             if (currentCart[index].quantity === 1) {
-                onRemoveProductFromCart(currentCart[index]);
+                _onRemoveProductFromCart(currentCart[index]);
                 return;
             }
             currentCart[index] = { ...currentCart[index], quantity: currentCart[index].quantity - 1 };
@@ -102,15 +99,14 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
                     paddingTop: insets.top + 15,
                     backgroundColor: Colors.red,
                 },
-            ]}
-            >
+            ]}>
                 <TouchableOpacity onPress={() => NavigationService.goBack()} >
                     <RemixIcon name={'arrow-left-line'} color={'white'} size={27} />
                 </TouchableOpacity>
                 <Text style={styles.txtTitle}>{'Cart'}</Text>
             </View>
         );
-    }
+    };
 
     return (
         <View style={styles.container}>
@@ -121,8 +117,8 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
                 renderItem={({ item, index }) => <CartItem
                     item={item}
                     index={index}
-                    onChangeQuantity={onChangeQuantity}
-                    onRemoveProductFromCart={onRemoveProductFromCart}
+                    onChangeQuantity={_onChangeQuantity}
+                    onRemoveProductFromCart={_onRemoveProductFromCart}
                 />}
                 keyExtractor={(item: any, index: any) => `CartScreen${index}`}
                 contentContainerStyle={{ paddingBottom: 100 }}
@@ -134,15 +130,20 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
                 extraData={carts}
                 style={styles.flex1}
             />
-            <View style={[styles.rowBetween, styles.viewDiscount]}>
-                <Text style={styles.txtDiscount}>{'Discount (%)'}</Text>
-                <TextInput
-                    keyboardType={'numeric'}
-                    onBlur={_onBlur}
-                    onChangeText={_onChange}
-                    style={styles.valueDiscount}
-                />
-            </View>
+            {
+                carts?.length ?
+                    <View style={[styles.rowBetween, styles.viewDiscount]}>
+                        <Text style={styles.txtDiscount}>{'Discount (%)'}</Text>
+                        <TextInput
+                            keyboardType={'numeric'}
+                            onBlur={_onBlur}
+                            onChangeText={_onChange}
+                            style={styles.valueDiscount}
+                        />
+                    </View>
+                    :
+                    null
+            }
             <View style={[styles.bottomCart, {
                 marginBottom: 16
             }]}>
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
     },
     empty: {
         fontWeight: '600',
-        fontSize: 12,
+        fontSize: 14,
         marginTop: 16,
     },
     bottomCart: {

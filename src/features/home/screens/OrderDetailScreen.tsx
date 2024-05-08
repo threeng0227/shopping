@@ -10,7 +10,7 @@ import RemixIcon from "react-native-remix-icon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationService } from "services/NavigationService";
 
-const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'OrderDetailScreen'>) => {
+const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScreen'>) => {
     const insets = useSafeAreaInsets();
     const data = useAppSelector(selectOrdersInfor) ?? [];
     const user = useAppSelector(selectUserInfor);
@@ -44,12 +44,10 @@ const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsLis
             </View>
         );
     };
+
     const _customerInfor = () => {
         return (
-            <View style={{
-                paddingHorizontal: 20,
-                paddingVertical: 16,
-            }}>
+            <View style={styles.customerInfor}>
                 <Text style={[styles.txtBlock, { color: Colors.red, marginBottom: 10 }]}>
                     {'Customer infor'}
                 </Text>
@@ -76,21 +74,14 @@ const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsLis
             </View>
         );
     };
+
     const _cartInfor = () => {
         return (
-            <View style={{
-                paddingHorizontal: 16,
-                marginBottom: 16
-            }}>
-                <Text
-                    style={[
-                        styles.txtBlock,
-                        {
-                            color: Colors.red,
-                            marginBottom: 16
-                        },
-                    ]}
-                >
+            <View style={styles.cartInfor}>
+                <Text style={[
+                    styles.txtBlock,
+                    styles.txtOrderDetail,
+                ]}>
                     {'Order detail'}
                 </Text>
                 {data.length ? data.map((item, index) => {
@@ -98,12 +89,7 @@ const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsLis
                         <View key={`ItemListDetail${index}`}>
                             <View style={styles.rowCenter}>
                                 <Image source={AppImages.cake} style={styles.imageProduct} />
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        marginLeft: 8,
-                                    }}
-                                >
+                                <View style={styles.productInfor}>
                                     <Text style={{ fontWeight: '700' }}>
                                         {item.title}
                                     </Text>
@@ -152,6 +138,7 @@ const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsLis
             </View>
         );
     };
+
     return (
         <View style={styles.container}>
             {_header()}
@@ -161,7 +148,8 @@ const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsLis
             </ScrollView>
         </View>
     );
-}
+};
+
 const styles = StyleSheet.create({
     header: {
         paddingBottom: 9,
@@ -235,6 +223,22 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16,
         textAlign: 'right'
+    },
+    customerInfor: {
+        paddingHorizontal: 20,
+        paddingVertical: 16,
+    },
+    cartInfor: {
+        paddingHorizontal: 16,
+        marginBottom: 16
+    },
+    productInfor: {
+        flex: 1,
+        marginLeft: 8,
+    },
+    txtOrderDetail: {
+        color: Colors.red,
+        marginBottom: 16
     },
 });
 

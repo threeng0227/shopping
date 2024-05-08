@@ -8,12 +8,13 @@ import { Colors } from 'constants/colors.constants';
 import TextInputForm from '../components/TextInputForm';
 import DateTimePicker from '../components/DateTimePicker';
 import RemixIcon from 'react-native-remix-icon';
-import  {NavigationService}  from 'services/NavigationService';
+import { NavigationService } from 'services/NavigationService';
 import { selectUserInfor, setUserInfor } from 'redux/reducers/userReducer';
 import { useAppSelector } from 'redux/store/hooks';
 import { useDispatch } from 'react-redux';
-const PHONE_REG =
-  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
+const PHONE_REG = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
 const ChangeProfileScreen = () => {
   const { top } = useSafeAreaInsets();
   const dispatch = useDispatch();
@@ -21,9 +22,9 @@ const ChangeProfileScreen = () => {
   const initState = {
     name: user?.name ?? '',
     birthday: user?.birthday ? new Date(user?.birthday) : new Date(),
-    address:user?.address ?? '',
-    phone: user?.phone ??'',
-    email: user?.email ??'',
+    address: user?.address ?? '',
+    phone: user?.phone ?? '',
+    email: user?.email ?? '',
   };
   const updateValidationSchema = yup.object().shape({
     email: yup
@@ -69,10 +70,7 @@ const ChangeProfileScreen = () => {
       >
         <Formik
           validationSchema={updateValidationSchema}
-          initialValues={
-            initState
-
-          }
+          initialValues={initState}
           onSubmit={(values) => _onSubmit(values)}
         >
           {({
@@ -127,7 +125,7 @@ const ChangeProfileScreen = () => {
                   },
                 ]}
               >
-                <Text style={styles.txtUpdate}>{user?.name ? 'Update' :'Register' }</Text>
+                <Text style={styles.txtUpdate}>{user?.name ? 'Update' : 'Register'}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -136,6 +134,7 @@ const ChangeProfileScreen = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

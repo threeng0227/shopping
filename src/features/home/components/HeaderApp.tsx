@@ -48,7 +48,7 @@ export const HeaderApp = () => {
             <Text style={styles.title}>{'Register'}</Text>
           </TouchableOpacity>
       }
-      <TouchableOpacity onPress={_goToCart} >
+      <TouchableOpacity onPress={_goToCart} activeOpacity={.75} >
         <RemixIcon
           name="shopping-cart-2-line"
           size={25}
@@ -62,7 +62,7 @@ export const HeaderApp = () => {
             },
           ]}
         >
-          <Text style={{ color: Colors.white }}>{badge > 99 ? '99+' : badge }</Text>
+          <Text style={styles.txtBadge}>{badge > 99 ? '99+' : badge }</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -98,4 +98,8 @@ const styles = StyleSheet.create({
     top: -8,
     right: -8,
   },
+  txtBadge: { 
+    color: Colors.white,
+    fontSize: 11
+  }
 });

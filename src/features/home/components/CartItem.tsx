@@ -11,11 +11,10 @@ export const CartItem = memo(({
 }: {
     item: any,
     index: number,
-    onChangeQuantity: (index: number, value: any, type: any) => void,
+    onChangeQuantity: (index: number, type: any) => void,
     onRemoveProductFromCart: (value: any) => void,
 
 }) => {
-    console.log('---CartItem', index)
     return (
         <View style={{ marginHorizontal: 16 }}>
             <View style={styles.itemContainer}>
@@ -31,7 +30,7 @@ export const CartItem = memo(({
                 <View style={styles.changeQuantity}>
                     <TouchableOpacity
                         activeOpacity={.75}
-                        onPress={() => onChangeQuantity(item, index, 'minus')}
+                        onPress={() => onChangeQuantity(index, 'minus')}
                     >
                         <RemixIcon
                             name="indeterminate-circle-line"
@@ -42,15 +41,14 @@ export const CartItem = memo(({
                     <View style={styles.quantity}>
                         <Text style={[styles.txtQuantity, {
                             color: Colors.red
-                        }]}
-                        >
+                        }]}>
                             {item.quantity}
                         </Text>
                     </View>
                     <TouchableOpacity
                         activeOpacity={.75}
                         onPress={() => {
-                            onChangeQuantity(item, index, 'add');
+                            onChangeQuantity(index, 'add');
                         }}
                     >
                         <RemixIcon

@@ -15,9 +15,9 @@ import { useDispatch } from "react-redux";
 import { store } from "redux/store";
 import { ModalLoading } from "../components/ModalLoading";
 
-const LIMIT = 20;
+const LIMIT = 40;
 
-const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
+const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
     const dispatch = useDispatch();
     const carts = useAppSelector(selectCartInfor) ?? [];
     const [isLoading, setLoading] = useState(false);
@@ -126,7 +126,13 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
     };
 
     const _onLoadMore = () => {
-        if (!isLoading && (items.length < DATA.length)) {
+        console.log({
+            items: items.length,
+            data: DATA.length,
+            isLoading
+        })
+        console.log(LIMIT * (refCurrentIndex.current - 1), LIMIT * refCurrentIndex.current)
+        if (!isLoading && (DATA.length > LIMIT * (refCurrentIndex.current - 1))) {
             setLoading(true);
             setItems(() => [...items, ...DATA.slice(LIMIT * (refCurrentIndex.current - 1), LIMIT * refCurrentIndex.current)]);
             refCurrentIndex.current += 1;
@@ -144,6 +150,8 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                 onEndReachedThreshold={.5}
                 onEndReached={_onLoadMore}
                 showsVerticalScrollIndicator={false}
+                disableVirtualization
+                windowSize={items.length > 50 ? items.length / 4 : 39}
                 keyExtractor={(item: any, index: any) => `HomeScreen${item.id}${index}`}
                 ListEmptyComponent={() => {
                     return (
@@ -157,7 +165,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                     onDelete={_onDeleted}
                 />}
                 ItemSeparatorComponent={() => <View style={styles.hr} />}
-                ListFooterComponent={() => <ActivityIndicator color={Colors.red} size={'small'} style={{ marginVertical: 16 }} />}
+                ListFooterComponent={() => isLoading ? <ActivityIndicator color={Colors.red} size={'small'} style={{ marginVertical: 16 }} /> : null}
             />
 
             <TouchableOpacity
