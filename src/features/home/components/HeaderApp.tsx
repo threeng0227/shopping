@@ -38,7 +38,7 @@ export const HeaderApp = () => {
             <Text style={{
               fontSize: 14,
               color: Colors.white
-            }}>{`Hello `}<Text style={{ fontWeight: '900' }}>{user?.name}</Text></Text>
+            }}>{`Hello, `}<Text style={{ fontWeight: '900' }}>{user?.name}</Text></Text>
           </TouchableOpacity>
           :
           <TouchableOpacity

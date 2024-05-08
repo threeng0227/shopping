@@ -1,8 +1,8 @@
-import React, { memo, useCallback } from "react";
-import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { memo } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppImages } from "constants/images.constants";
 import { Colors } from "constants/colors.constants";
-import { RectButton, Swipeable } from "react-native-gesture-handler";
+import { Swipeable } from "react-native-gesture-handler";
 export const ProductItem = memo(({
     item,
     onChange,

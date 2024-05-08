@@ -1,9 +1,8 @@
 import { Formik } from "formik";
 import React from "react";
-import { Modal, Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Modal, Platform, Pressable, StyleSheet, View } from "react-native";
 import * as yup from 'yup';
 import TextInputForm from "./TextInputForm";
-import RemixIcon from 'react-native-remix-icon';
 import { ButtonComponent } from "./ButtonComponent";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Colors } from "constants/colors.constants";

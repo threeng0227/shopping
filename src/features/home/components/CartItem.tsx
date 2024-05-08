@@ -2,7 +2,6 @@ import React, { memo, useCallback } from "react";
 import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppImages } from "constants/images.constants";
 import { Colors } from "constants/colors.constants";
-import { RectButton, Swipeable } from "react-native-gesture-handler";
 import RemixIcon from "react-native-remix-icon";
 export const CartItem = memo(({
     item,

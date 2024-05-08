@@ -10,7 +10,7 @@ import DateTimePicker from '../components/DateTimePicker';
 import RemixIcon from 'react-native-remix-icon';
 import  {NavigationService}  from 'services/NavigationService';
 import { selectUserInfor, setUserInfor } from 'redux/reducers/userReducer';
-import { useAppDispatch, useAppSelector } from 'redux/store/hooks';
+import { useAppSelector } from 'redux/store/hooks';
 import { useDispatch } from 'react-redux';
 const PHONE_REG =
   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;

@@ -130,36 +130,36 @@ const OrderDetailScreen = ({ navigation, route }: StackScreenProps<HomeParamsLis
                     <Text style={styles.txtBlock}>{'Discount (%)'}</Text>
                     <Text style={styles.txtBlock}>{discount}</Text>
                 </View>
-                <View style={[styles.rowBetween, {marginTop: 10}]}>
+                <View style={[styles.rowBetween, { marginTop: 10 }]}>
                     <Text style={styles.txtBlock}>
                         {'Total'}
                     </Text>
                     <View>
-                    <Text style={[styles.txtTotal, {
-                        color: Colors.red,
-                        textDecorationLine: discount > 0 ? 'line-through' : 'none'
-                    }]}>
-                        {`$${total}`}
-                    </Text>
-                    {discount > 0 ? <Text style={[styles.txtTotal, {
-                        color: Colors.red
-                    }]}>
-                        {`$${(total - (total * (discount / 100))) > 0 ? (total - (total * (discount / 100))).toFixed(2) : 0}`}
-                    </Text> : null}
+                        <Text style={[styles.txtTotal, {
+                            color: Colors.red,
+                            textDecorationLine: discount > 0 ? 'line-through' : 'none'
+                        }]}>
+                            {`$${total}`}
+                        </Text>
+                        {discount > 0 ? <Text style={[styles.txtTotal, {
+                            color: Colors.red
+                        }]}>
+                            {`$${(total - (total * (discount / 100))) > 0 ? (total - (total * (discount / 100))).toFixed(2) : 0}`}
+                        </Text> : null}
                     </View>
-                  
+
                 </View>
             </View>
         );
     };
     return (
-        <ScrollView style={{
-            backgroundColor: Colors.white,
-        }}>
+        <View style={styles.container}>
             {_header()}
-            {_customerInfor()}
-            {_cartInfor()}
-        </ScrollView>
+            <ScrollView>
+                {_customerInfor()}
+                {_cartInfor()}
+            </ScrollView>
+        </View>
     );
 }
 const styles = StyleSheet.create({
