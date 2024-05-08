@@ -98,7 +98,7 @@ const ChangeProfileScreen = () => {
                 title={'Birthday'}
               />
               <TextInputForm
-                title={'emailAddress'}
+                title={'Email Address'}
                 error={touched.email ? errors.email : ''}
                 onChangeText={handleChange('email')}
                 value={values.email}
@@ -127,7 +127,7 @@ const ChangeProfileScreen = () => {
                   },
                 ]}
               >
-                <Text style={styles.txtUpdate}>{!user ? 'Register' : 'Update'}</Text>
+                <Text style={styles.txtUpdate}>{user?.name ? 'Update' :'Register' }</Text>
               </TouchableOpacity>
             </View>
           )}

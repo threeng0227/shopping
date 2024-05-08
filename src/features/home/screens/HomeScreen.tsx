@@ -143,6 +143,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                 data={items}
                 onEndReachedThreshold={.5}
                 onEndReached={_onLoadMore}
+                showsVerticalScrollIndicator={false}
                 keyExtractor={(item: any, index: any) => `HomeScreen${item.id}${index}`}
                 ListEmptyComponent={() => {
                     return (
@@ -155,6 +156,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                     onEdit={_onEdit}
                     onDelete={_onDeleted}
                 />}
+                ItemSeparatorComponent={() => <View style={styles.hr} />}
                 ListFooterComponent={() => <ActivityIndicator color={Colors.red} size={'small'} style={{ marginVertical: 16 }} />}
             />
 
@@ -165,6 +167,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
             </TouchableOpacity>
 
             {isAddCart ? <TouchableOpacity
+                activeOpacity={.75}
                 onPress={_onAddToCart}
                 style={styles.btnAddToCart}>
                 <Text style={{
@@ -206,8 +209,8 @@ const styles = StyleSheet.create({
     btnAddToCart: {
         position: 'absolute',
         borderRadius: 10,
-        paddingVertical: 7,
-        paddingHorizontal: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'red',
@@ -217,6 +220,12 @@ const styles = StyleSheet.create({
     iconPlus: {
         width: 40,
         height: 40
+    },
+    hr: {
+        width: '100%',
+        height: 1,
+        backgroundColor: Colors.grayBorder,
+        marginBottom: 10
     }
 });
 export default HomeScreen;

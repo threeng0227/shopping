@@ -1,6 +1,6 @@
 
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Alert, View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
+import { Alert, View, Text, FlatList, StyleSheet, TextInput, Platform } from 'react-native';
 import { StackScreenProps } from "@react-navigation/stack";
 import { HomeParamsList } from "domain/types/Navigation";
 import { useAppSelector } from "redux/store/hooks";
@@ -14,6 +14,7 @@ import { ButtonComponent } from "../components/ButtonComponent";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CartItem } from "../components/CartItem";
 import { store } from "redux/store";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
             },
             {
                 text: 'YES', onPress: () => {
-                    const currentCart = [...carts];
+                    const currentCart = [...store.getState().user.carts ?? []];
                     const exist = currentCart.findIndex((x) => x.id === item.id);
                     if (exist != -1) {
                         dispatch(setCartInfor(currentCart?.filter(x => x.id !== item.id)));
@@ -54,7 +55,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
     }, []);
 
     const _goToCheckOut = () => {
-        if(user?.name){
+        if (user?.name) {
             dispatch(setOrdersInfor({
                 data: carts,
                 discount: discount
@@ -64,7 +65,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
         } else {
             Alert.alert('Please Register!')
         }
-      
+
     }
 
     const _onChange = (e: any) => {
@@ -115,6 +116,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
         <View style={styles.container}>
             {_header()}
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={carts}
                 renderItem={({ item, index }) => <CartItem
                     item={item}
