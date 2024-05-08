@@ -18,18 +18,36 @@ import { ModalLoading } from "../components/ModalLoading";
 const LIMIT = 40;
 
 const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
+
     const dispatch = useDispatch();
     const carts = useAppSelector(selectCartInfor) ?? [];
+
     const [isLoading, setLoading] = useState(false);
-    const refCurrentIndex = useRef<number>(1);
-    const refModalLoading = useRef() as any;
-    const refItem = useRef() as any;
     const [items, setItems] = useState<RandomData[]>([]);
     const [visible, setVisible] = useState(false);
 
+    const refCurrentIndex = useRef<number>(1);
+    const refModalLoading = useRef() as any;
+    const refItem = useRef() as any;
+    const refTimer = useRef<any>(null);
+
+    useEffect(() => {
+        _getData();
+        return clearTimeout(refTimer.current)
+    }, []);
+
+    const _getData = () => {
+        setLoading(true);
+        setItems(() => [...items, ...DATA.slice(0, LIMIT)]);
+        refCurrentIndex.current += 1;
+        refTimer.current = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    };
+
     const _onAdd = useCallback((value: any) => {
         refModalLoading.current?.showModal?.();
-        setTimeout(() => {
+        refTimer.current = setTimeout(() => {
             const newItem = {
                 description: value.description,
                 title: value.title,
@@ -58,7 +76,7 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
             {
                 text: 'YES', onPress: () => {
                     refModalLoading.current?.showModal?.();
-                    setTimeout(() => {
+                    refTimer.current = setTimeout(() => {
                         const currentCart = [...store.getState().user.carts ?? []];
                         const exist = currentCart.findIndex((x) => x.id === value.id);
                         setItems(prevItems => prevItems.filter(x => x.id !== value.id));
@@ -73,23 +91,23 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
     }, []);
 
     const _onAddToCart = () => {
-        const newCart = items.filter(x => x.isChoose === true);
         const currentCart = [...carts];
-        for (let i = 0; i < newCart.length; i++) {
-            const e = newCart[i];
-            const exist = currentCart.findIndex((x) => x.id === e.id);
-            if (exist != -1) {
-                currentCart[exist] = {
-                    ...currentCart[exist],
-                    quantity: currentCart[exist].quantity + 1
+        items.forEach((e) => {
+            if(e.isChoose === true) {
+                const exist = currentCart.findIndex((x) => x.id === e.id);
+                if (exist != -1) {
+                    currentCart[exist] = {
+                        ...currentCart[exist],
+                        quantity: currentCart[exist].quantity + 1
+                    }
+                } else {
+                    currentCart.push({
+                        ...e,
+                        quantity: 1
+                    });
                 }
-            } else {
-                currentCart.push({
-                    ...e,
-                    quantity: 1
-                });
             }
-        }
+        });
         dispatch(setCartInfor([...currentCart]));
         setItems(prevItems => prevItems.map((item, index) => {
             return item.isChoose === false ? item : {
@@ -97,6 +115,11 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
                 isChoose: false
             }
         }));
+    };
+
+    const _onAddProduct = () => {
+            refItem.current = null;
+            setVisible(true);
     };
 
     const _onChange = useCallback((value: { description: any; title: any; isChoose: any; price: any; tax: number, id: number }) => {
@@ -112,26 +135,7 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
         }));
     }, []);
 
-    useEffect(() => {
-        _getData();
-    }, []);
-
-    const _getData = () => {
-        setLoading(true);
-        setItems(() => [...items, ...DATA.slice(0, LIMIT)]);
-        refCurrentIndex.current += 1;
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    };
-
     const _onLoadMore = () => {
-        console.log({
-            items: items.length,
-            data: DATA.length,
-            isLoading
-        })
-        console.log(LIMIT * (refCurrentIndex.current - 1), LIMIT * refCurrentIndex.current)
         if (!isLoading && (DATA.length > LIMIT * (refCurrentIndex.current - 1))) {
             setLoading(true);
             setItems(() => [...items, ...DATA.slice(LIMIT * (refCurrentIndex.current - 1), LIMIT * refCurrentIndex.current)]);
@@ -155,7 +159,7 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
                 keyExtractor={(item: any, index: any) => `HomeScreen${item.id}${index}`}
                 ListEmptyComponent={() => {
                     return (
-                        <Text style={{ textAlign: 'center', marginVertical: 16 }}>{'Data Not Found!'}</Text>
+                        <Text style={styles.txtNotFound}>{'Data Not Found!'}</Text>
                     );
                 }}
                 renderItem={({ item, index }) => <ProductItem
@@ -169,7 +173,7 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
             />
 
             <TouchableOpacity
-                onPress={() => setVisible(true)}
+                onPress={_onAddProduct}
                 style={styles.btnAdd}>
                 <Image source={AppImages.add} style={styles.iconPlus} />
             </TouchableOpacity>
@@ -178,11 +182,7 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
                 activeOpacity={.75}
                 onPress={_onAddToCart}
                 style={styles.btnAddToCart}>
-                <Text style={{
-                    color: Colors.white,
-                    fontWeight: '600',
-                    fontSize: 14
-                }}>{'Add to cart'}</Text>
+                <Text style={styles.txtAddToCart}>{'Add to cart'}</Text>
             </TouchableOpacity>
                 :
                 null
@@ -234,6 +234,15 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: Colors.grayBorder,
         marginBottom: 10
+    },
+    txtAddToCart: {
+        color: Colors.white,
+        fontWeight: '600',
+        fontSize: 14
+    },
+    txtNotFound: { 
+        textAlign: 'center', 
+        marginVertical: 16,
     }
 });
 export default HomeScreen;

@@ -1,9 +1,6 @@
 import { Colors } from 'constants/colors.constants';
 import React from 'react';
-import { memo } from 'react';
 import {
-  Animated,
-  Platform,
   StyleSheet,
   Text,
   View,
@@ -15,18 +12,20 @@ import { selectCartInfor, selectUserInfor } from 'redux/reducers/userReducer';
 import { useAppSelector } from 'redux/store/hooks';
 import { NavigationService } from 'services/NavigationService';
 
-
 export const HeaderApp = () => {
   const user = useAppSelector(selectUserInfor);
   const carts = useAppSelector(selectCartInfor) ?? [];
-  const badge = carts?.length && carts.map(x => x.quantity).reduce((a, b) => a + b);
   const insets = useSafeAreaInsets();
+  const badge = carts?.length && carts.map(x => x.quantity).reduce((a, b) => a + b);
+
   const _goToCart = () => { 
     NavigationService.navigate('CartScreen', {});
-  }
+  };
+
   const _goToProfile = () => {
     NavigationService.navigate('ChangeProfileScreen', {});
-  }
+  };
+
   return (
     <View style={[styles.row, { paddingTop: insets.top + 10 }]}>
       {
@@ -35,10 +34,7 @@ export const HeaderApp = () => {
             onPress={_goToProfile}
             style={styles.buttonAuthen}
           >
-            <Text style={{
-              fontSize: 14,
-              color: Colors.white
-            }}>{`Hello, `}<Text style={{ fontWeight: '900' }}>{user?.name}</Text></Text>
+            <Text style={styles.txtName}>{`Hello, `}<Text style={{ fontWeight: '900' }}>{user?.name}</Text></Text>
           </TouchableOpacity>
           :
           <TouchableOpacity
@@ -55,12 +51,7 @@ export const HeaderApp = () => {
           color={Colors.white}
         />
         <View
-          style={[
-            styles.noti,
-            {
-              backgroundColor: Colors.orange,
-            },
-          ]}
+          style={styles.noti}
         >
           <Text style={styles.txtBadge}>{badge > 99 ? '99+' : badge }</Text>
         </View>
@@ -97,9 +88,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -8,
     right: -8,
+    backgroundColor: Colors.orange,
   },
   txtBadge: { 
     color: Colors.white,
     fontSize: 11
+  },
+  txtName: {
+    fontSize: 14,
+    color: Colors.white
   }
 });

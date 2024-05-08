@@ -51,7 +51,7 @@ export const ButtonComponent = (props: Props) => {
     >
       {!!leftIcon && leftIcon}
       {title && (
-        <Text style={[styles.textStyle, !hasIcon && hasIcon, textStyle]}>
+        <Text style={[styles.textStyle, textStyle]}>
           {title}
         </Text>
       )}

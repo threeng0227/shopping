@@ -1,12 +1,11 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Platform, Pressable, StyleSheet, View } from "react-native";
 import * as yup from 'yup';
 import TextInputForm from "./TextInputForm";
 import { ButtonComponent } from "./ButtonComponent";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Colors } from "constants/colors.constants";
-
 
 const ModalChangeProduct = (({
     visible,
@@ -37,7 +36,7 @@ const ModalChangeProduct = (({
 
     const _onSubmit = (values: typeof initState) => {
         setVisible(false);
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             data ?
                 onEdit({
                     description: values.description,
@@ -55,7 +54,9 @@ const ModalChangeProduct = (({
                     tax: values.tax,
                     price: values.price
                 })
+            clearTimeout(timer);
         }, 300);
+
     };
     return (
         <Modal
@@ -64,7 +65,7 @@ const ModalChangeProduct = (({
             animationType={'fade'}
         >
             <View style={styles.containerForm}>
-                <Pressable onPress={() => setVisible(false)} style={{ flex: 1 }} />
+                <Pressable onPress={() => setVisible(false)} style={styles.flex1} />
                 <View style={styles.contentForm}>
                     <KeyboardAwareScrollView
                         scrollEnabled={false}
@@ -92,10 +93,7 @@ const ModalChangeProduct = (({
                                 return (
 
                                     <View style={styles.form}>
-                                        <View style={{
-                                            flex: 1,
-                                            marginVertical: 16
-                                        }}>
+                                        <View style={styles.formInfor}>
                                             <TextInputForm
                                                 title={'Name'}
                                                 onChangeText={handleChange('title')}
@@ -130,7 +128,7 @@ const ModalChangeProduct = (({
                                         </View>
                                         <ButtonComponent
                                             onPress={handleSubmit}
-                                            style={{ backgroundColor: Colors.red }}
+                                            style={styles.bgRed}
                                             title={data ? 'Update' : 'Add'}
                                         />
                                     </View>
@@ -176,6 +174,16 @@ const styles = StyleSheet.create({
     },
     marginTop20: {
         marginTop: 20
+    },
+    bgRed: { 
+        backgroundColor: Colors.red
+    },
+    formInfor: {
+        flex: 1,
+        marginVertical: 16
+    },
+    flex1: { 
+        flex: 1 
     }
 });
 

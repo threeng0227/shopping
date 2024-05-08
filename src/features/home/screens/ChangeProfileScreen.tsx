@@ -16,8 +16,8 @@ import { useDispatch } from 'react-redux';
 const PHONE_REG = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 
 const ChangeProfileScreen = () => {
-  const { top } = useSafeAreaInsets();
   const dispatch = useDispatch();
+  const { top } = useSafeAreaInsets();
   const user = useAppSelector(selectUserInfor);
   const initState = {
     name: user?.name ?? '',
@@ -56,7 +56,6 @@ const ChangeProfileScreen = () => {
           styles.header,
           {
             paddingTop: top + 15,
-            backgroundColor: Colors.red,
           },
         ]}
       >
@@ -84,7 +83,7 @@ const ChangeProfileScreen = () => {
             <View style={styles.content}>
               <TextInputForm
                 title={'Name'}
-                error={touched.name ? errors.name : ''}
+                error={touched.name && errors.name}
                 onChangeText={handleChange('name')}
                 value={values.name}
                 containerStyles={styles.marginTop20}
@@ -97,33 +96,28 @@ const ChangeProfileScreen = () => {
               />
               <TextInputForm
                 title={'Email Address'}
-                error={touched.email ? errors.email : ''}
+                error={touched.email && errors.email}
                 onChangeText={handleChange('email')}
                 value={values.email}
                 containerStyles={styles.marginTop20}
               />
               <TextInputForm
                 title={'Phone Number'}
-                error={touched.phone ? errors.phone : ''}
+                error={touched.phone && errors.phone}
                 onChangeText={handleChange('phone')}
                 value={values.phone}
                 containerStyles={styles.marginTop20}
               />
               <TextInputForm
                 title={'Address'}
-                error={touched.address ? errors.address : ''}
+                error={touched.address && errors.address}
                 onChangeText={handleChange('address')}
                 value={values.address}
                 containerStyles={styles.marginTop20}
               />
               <TouchableOpacity
                 onPress={() => handleSubmit()}
-                style={[
-                  styles.btnUpdate,
-                  {
-                    backgroundColor: Colors.red,
-                  },
-                ]}
+                style={styles.btnUpdate}
               >
                 <Text style={styles.txtUpdate}>{user?.name ? 'Update' : 'Register'}</Text>
               </TouchableOpacity>
@@ -146,6 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    backgroundColor: Colors.red
   },
   txtTitle: {
     fontWeight: '600',
@@ -169,6 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
+    backgroundColor: Colors.red
   },
   txtUpdate: {
     textTransform: 'uppercase',

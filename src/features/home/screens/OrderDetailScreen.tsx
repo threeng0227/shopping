@@ -33,7 +33,6 @@ const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScr
                 styles.header,
                 {
                     paddingTop: insets.top + 15,
-                    backgroundColor: Colors.red,
                 },
             ]}
             >
@@ -48,7 +47,7 @@ const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScr
     const _customerInfor = () => {
         return (
             <View style={styles.customerInfor}>
-                <Text style={[styles.txtBlock, { color: Colors.red, marginBottom: 10 }]}>
+                <Text style={[styles.txtBlock, styles.txtCustomer]}>
                     {'Customer infor'}
                 </Text>
                 <View style={styles.rowBetween}>
@@ -90,15 +89,13 @@ const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScr
                             <View style={styles.rowCenter}>
                                 <Image source={AppImages.cake} style={styles.imageProduct} />
                                 <View style={styles.productInfor}>
-                                    <Text style={{ fontWeight: '700' }}>
+                                    <Text style={styles.fontBold}>
                                         {item.title}
                                     </Text>
                                     <View
                                         style={[
                                             styles.rowBetween,
-                                            {
-                                                paddingVertical: 2,
-                                            },
+                                            styles.padding2
                                         ]}
                                     >
                                         <Text>{`Quantity:  ${item.quantity}`}</Text>
@@ -116,7 +113,7 @@ const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScr
                     <Text style={styles.txtBlock}>{'Discount (%)'}</Text>
                     <Text style={styles.txtBlock}>{discount}</Text>
                 </View>
-                <View style={[styles.rowBetween, { marginTop: 10 }]}>
+                <View style={[styles.rowBetween, styles.marginTop10]}>
                     <Text style={styles.txtBlock}>
                         {'Total'}
                     </Text>
@@ -156,7 +153,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         alignItems: 'center',
         flexDirection: 'row',
-        gap: 26
+        gap: 26,
+        backgroundColor: Colors.red
     },
     txtTitle: {
         fontWeight: '600',
@@ -170,6 +168,13 @@ const styles = StyleSheet.create({
     txtBlock: {
         fontSize: 16,
         fontWeight: '700'
+    },
+    marginTop10: {
+        marginTop: 10
+    },
+    txtCustomer: {
+        color: Colors.red,
+        marginBottom: 10
     },
     rowBetween: {
         flexDirection: 'row',
@@ -240,6 +245,12 @@ const styles = StyleSheet.create({
         color: Colors.red,
         marginBottom: 16
     },
+    padding2: {
+        paddingVertical: 2,
+    },
+    fontBold: {
+        fontWeight: '700'
+    }
 });
 
 export default OrderDetailScreen;

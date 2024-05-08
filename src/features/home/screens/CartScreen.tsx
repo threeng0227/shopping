@@ -15,12 +15,17 @@ import { CartItem } from "../components/CartItem";
 import { store } from "redux/store";
 
 const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
-    const dispatch = useDispatch();
     const insets = useSafeAreaInsets();
-    const refInputValue = useRef(0);
+
+    const dispatch = useDispatch();
+
     const carts = useAppSelector(selectCartInfor) ?? [];
     const user = useAppSelector(selectUserInfor);
+
+    const refInputValue = useRef(0);
+
     const [discount, setDiscount] = useState(0);
+
     const total = useMemo(() => {
         if (carts?.length) {
             return carts
@@ -91,13 +96,12 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
         dispatch(setCartInfor(currentCart));
     }, []);
 
-    const _header = () => {
+    const _header = useCallback(() => {
         return (
             <View style={[
                 styles.header,
                 {
                     paddingTop: insets.top + 15,
-                    backgroundColor: Colors.red,
                 },
             ]}>
                 <TouchableOpacity onPress={() => NavigationService.goBack()} >
@@ -106,7 +110,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
                 <Text style={styles.txtTitle}>{'Cart'}</Text>
             </View>
         );
-    };
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -121,7 +125,7 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
                     onRemoveProductFromCart={_onRemoveProductFromCart}
                 />}
                 keyExtractor={(item: any, index: any) => `CartScreen${index}`}
-                contentContainerStyle={{ paddingBottom: 100 }}
+                contentContainerStyle={styles.padding}
                 ListEmptyComponent={
                     <View style={styles.txtNotFound}>
                         <Text style={styles.empty}>{'Data not found!'}</Text>
@@ -144,22 +148,17 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
                     :
                     null
             }
-            <View style={[styles.bottomCart, {
-                marginBottom: 16
-            }]}>
+            <View style={styles.bottomCart}>
                 <View>
-                    <Text style={{ fontWeight: '600' }}>
+                    <Text style={styles.fontWeight600}>
                         {'Total'}
                     </Text>
-                    <Text style={[styles.txtTotal, {
-                        color: Colors.red,
+                    <Text style={[styles.txtTotal, styles.colorRed, {
                         textDecorationLine: discount > 0 ? 'line-through' : 'none'
                     }]}>
                         {`$${total}`}
                     </Text>
-                    {discount > 0 ? <Text style={[styles.txtTotal, {
-                        color: Colors.red
-                    }]}>
+                    {discount > 0 ? <Text style={[styles.txtTotal, styles.colorRed]}>
                         {`$${(total - (total * (discount / 100))) > 0 ? (total - (total * (discount / 100))).toFixed(2) : 0}`}
                     </Text> : null}
                 </View>
@@ -177,6 +176,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
+    },
+    colorRed: {
+        color: Colors.red
     },
     txtDiscount: {
         fontSize: 16,
@@ -198,6 +200,7 @@ const styles = StyleSheet.create({
         padding: 16,
         borderTopWidth: 1,
         borderTopColor: Colors.GreySection,
+        marginBottom: 16,
     },
     txtTotal: {
         fontWeight: '600',
@@ -219,7 +222,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         alignItems: 'center',
         flexDirection: 'row',
-        gap: 26
+        gap: 26,
+        backgroundColor: Colors.red
     },
     txtTitle: {
         fontWeight: '600',
@@ -244,6 +248,12 @@ const styles = StyleSheet.create({
     btnOrder: {
         width: '50%',
         backgroundColor: Colors.red
+    },
+    padding: { 
+        paddingBottom: 100
+    },
+    fontWeight600: { 
+        fontWeight: '600',
     }
 });
 

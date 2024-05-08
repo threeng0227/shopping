@@ -39,9 +39,7 @@ export const CartItem = memo(({
                         />
                     </TouchableOpacity>
                     <View style={styles.quantity}>
-                        <Text style={[styles.txtQuantity, {
-                            color: Colors.red
-                        }]}>
+                        <Text style={styles.txtQuantity}>
                             {item.quantity}
                         </Text>
                     </View>
@@ -169,6 +167,7 @@ const styles = StyleSheet.create({
     txtQuantity: {
         fontWeight: '600',
         fontSize: 14,
+        color: Colors.red,
     },
     rowBetween: {
         justifyContent: 'space-between',

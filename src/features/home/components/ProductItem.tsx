@@ -21,11 +21,9 @@ export const ProductItem = memo(({
                 <TouchableOpacity
                     activeOpacity={.75}
                     onPress={() => onDelete(item)}
-                    style={[styles.action, {
-                        backgroundColor: Colors.red,
-                    }]}
+                    style={styles.action}
                 >
-                    <Text style={styles.actionText}>
+                    <Text style={[styles.actionText, styles.bgRed]}>
                         {'Delete'}
                     </Text>
                 </TouchableOpacity>
@@ -42,9 +40,7 @@ export const ProductItem = memo(({
             <View style={styles.item}>
                 <TouchableOpacity
                     activeOpacity={.75}
-                    style={{
-                        paddingLeft: 16
-                    }}
+                    style={styles.padding16}
                     onPress={() => onChange({
                         ...item,
                         isChoose: !item.isChoose
@@ -58,9 +54,7 @@ export const ProductItem = memo(({
                     </View>
                 </TouchableOpacity>
                 <Image source={AppImages.cake} style={styles.image} />
-                <View style={{
-                    flex: 1
-                }}>
+                <View style={styles.flex1}>
                     <Text style={styles.title}>{item.title}</Text>
                     <Text
                         numberOfLines={2}
@@ -129,5 +123,14 @@ const styles = StyleSheet.create({
         borderColor: Colors.grayBold,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    bgRed: {
+        backgroundColor: Colors.red
+    },
+    flex1: {
+        flex: 1
+    },
+    padding16: {
+        paddingLeft: 16
     }
 });
