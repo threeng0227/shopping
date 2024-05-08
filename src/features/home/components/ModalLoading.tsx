@@ -9,9 +9,11 @@ export const ModalLoading = forwardRef(({}, ref) => {
       showModal,
       hideModal,
     }
-  })
+  });
+  
   const showModal = () => setLoadingModal(true);
   const hideModal = () => setLoadingModal(false);
+
   return (
     <Modal visible={loading} transparent>
       <View style={styles.container}>

@@ -13,7 +13,6 @@ export const CartItem = memo(({
     index: number,
     onChangeQuantity: (index: number, type: any) => void,
     onRemoveProductFromCart: (value: any) => void,
-
 }) => {
     return (
         <View style={{ marginHorizontal: 16 }}>

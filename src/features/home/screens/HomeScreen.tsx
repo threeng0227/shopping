@@ -93,7 +93,7 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
     const _onAddToCart = () => {
         const currentCart = [...carts];
         items.forEach((e) => {
-            if(e.isChoose === true) {
+            if (e.isChoose === true) {
                 const exist = currentCart.findIndex((x) => x.id === e.id);
                 if (exist != -1) {
                     currentCart[exist] = {
@@ -118,8 +118,8 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
     };
 
     const _onAddProduct = () => {
-            refItem.current = null;
-            setVisible(true);
+        refItem.current = null;
+        setVisible(true);
     };
 
     const _onChange = useCallback((value: { description: any; title: any; isChoose: any; price: any; tax: number, id: number }) => {
@@ -144,6 +144,21 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
         }
     }
 
+    const _renderItem = ({ item, index }: { item: any, index: number }) => (<ProductItem
+        item={item}
+        onChange={_onChange}
+        onEdit={_onEdit}
+        onDelete={_onDeleted}
+    />);
+
+    const _listEmptyComponent = () => {
+        return (
+            <Text style={styles.txtNotFound}>{'Data Not Found!'}</Text>
+        );
+    };
+
+    const _listFooterComponent = () => isLoading ? <ActivityIndicator color={Colors.red} size={'small'} style={{ marginVertical: 16 }} /> : null;
+
     const isAddCart = items.find(x => x.isChoose === true);
 
     return (
@@ -157,19 +172,10 @@ const HomeScreen = ({ }: StackScreenProps<HomeParamsList, 'HomeScreen'>) => {
                 disableVirtualization
                 windowSize={items.length > 50 ? items.length / 4 : 39}
                 keyExtractor={(item: any, index: any) => `HomeScreen${item.id}${index}`}
-                ListEmptyComponent={() => {
-                    return (
-                        <Text style={styles.txtNotFound}>{'Data Not Found!'}</Text>
-                    );
-                }}
-                renderItem={({ item, index }) => <ProductItem
-                    item={item}
-                    onChange={_onChange}
-                    onEdit={_onEdit}
-                    onDelete={_onDeleted}
-                />}
+                ListEmptyComponent={_listEmptyComponent}
+                renderItem={_renderItem}
                 ItemSeparatorComponent={() => <View style={styles.hr} />}
-                ListFooterComponent={() => isLoading ? <ActivityIndicator color={Colors.red} size={'small'} style={{ marginVertical: 16 }} /> : null}
+                ListFooterComponent={_listFooterComponent}
             />
 
             <TouchableOpacity
@@ -240,8 +246,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 14
     },
-    txtNotFound: { 
-        textAlign: 'center', 
+    txtNotFound: {
+        textAlign: 'center',
         marginVertical: 16,
     }
 });

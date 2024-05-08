@@ -112,25 +112,28 @@ const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
         );
     }, []);
 
+    const _renderItem = ({ item, index }: { item: any, index: number }) => (<CartItem
+        item={item}
+        index={index}
+        onChangeQuantity={_onChangeQuantity}
+        onRemoveProductFromCart={_onRemoveProductFromCart}
+    />);
+
+    const _listEmptyComponent = () => {
+        return (
+            <Text style={styles.txtNotFound}>{'Data Not Found!'}</Text>
+        );
+    };
     return (
         <View style={styles.container}>
             {_header()}
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={carts}
-                renderItem={({ item, index }) => <CartItem
-                    item={item}
-                    index={index}
-                    onChangeQuantity={_onChangeQuantity}
-                    onRemoveProductFromCart={_onRemoveProductFromCart}
-                />}
+                renderItem={_renderItem}
                 keyExtractor={(item: any, index: any) => `CartScreen${index}`}
                 contentContainerStyle={styles.padding}
-                ListEmptyComponent={
-                    <View style={styles.txtNotFound}>
-                        <Text style={styles.empty}>{'Data not found!'}</Text>
-                    </View>
-                }
+                ListEmptyComponent={_listEmptyComponent}
                 extraData={carts}
                 style={styles.flex1}
             />
@@ -249,10 +252,10 @@ const styles = StyleSheet.create({
         width: '50%',
         backgroundColor: Colors.red
     },
-    padding: { 
+    padding: {
         paddingBottom: 100
     },
-    fontWeight600: { 
+    fontWeight600: {
         fontWeight: '600',
     }
 });

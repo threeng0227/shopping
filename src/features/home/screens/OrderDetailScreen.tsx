@@ -74,6 +74,31 @@ const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScr
         );
     };
 
+    const _renderItem = (item: any, index: number) => {
+        return (
+            <View key={`ItemListDetail${index}`}>
+                <View style={styles.rowCenter}>
+                    <Image source={AppImages.cake} style={styles.imageProduct} />
+                    <View style={styles.productInfor}>
+                        <Text style={styles.fontBold}>
+                            {item.title}
+                        </Text>
+                        <View
+                            style={[
+                                styles.rowBetween,
+                                styles.padding2
+                            ]}
+                        >
+                            <Text>{`Quantity:  ${item.quantity}`}</Text>
+                            <Text style={styles.txtBlock}>{`Price: $${item.price}`}</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.hr} />
+            </View>
+        );
+    }
+
     const _cartInfor = () => {
         return (
             <View style={styles.cartInfor}>
@@ -83,32 +108,7 @@ const OrderDetailScreen = ({ }: StackScreenProps<HomeParamsList, 'OrderDetailScr
                 ]}>
                     {'Order detail'}
                 </Text>
-                {data.length ? data.map((item, index) => {
-                    return (
-                        <View key={`ItemListDetail${index}`}>
-                            <View style={styles.rowCenter}>
-                                <Image source={AppImages.cake} style={styles.imageProduct} />
-                                <View style={styles.productInfor}>
-                                    <Text style={styles.fontBold}>
-                                        {item.title}
-                                    </Text>
-                                    <View
-                                        style={[
-                                            styles.rowBetween,
-                                            styles.padding2
-                                        ]}
-                                    >
-                                        <Text>{`Quantity:  ${item.quantity}`}</Text>
-                                        <Text style={styles.txtBlock}>{`Price: $${item.price}`}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={styles.hr} />
-                        </View>
-                    );
-                }) :
-                    null
-                }
+                {data.length && data.map(_renderItem)}
                 <View style={styles.rowBetween}>
                     <Text style={styles.txtBlock}>{'Discount (%)'}</Text>
                     <Text style={styles.txtBlock}>{discount}</Text>
