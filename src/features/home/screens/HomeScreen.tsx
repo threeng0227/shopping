@@ -13,6 +13,7 @@ import { useAppSelector } from "redux/store/hooks";
 import { selectCartInfor, setCartInfor } from "redux/reducers/userReducer";
 import { useDispatch } from "react-redux";
 import { store } from "redux/store";
+import { ModalLoading } from "../components/ModalLoading";
 
 const LIMIT = 20;
 
@@ -21,6 +22,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
     const carts = useAppSelector(selectCartInfor) ?? [];
     const [isLoading, setLoading] = useState(false);
     const refCurrentIndex = useRef<number>(1);
+    const refModalLoading = useRef() as any;
     const refItem = useRef() as any;
     const [items, setItems] = useState<RandomData[]>([]);
     const [visible, setVisible] = useState(false);
@@ -51,12 +53,16 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
             },
             {
                 text: 'YES', onPress: () => {
-                    const currentCart = [...store.getState().user.carts ?? []];
-                    const exist = currentCart.findIndex((x) => x.id === value.id);
-                    if (exist != -1) {
-                        dispatch(setCartInfor(currentCart?.filter(x => x.id !== value.id)));
-                    }
-                    setItems(prevItems => prevItems.filter(x => x.id !== value.id));
+                    refModalLoading.current?.showModal?.();
+                    setTimeout(() => {
+                        const currentCart = [...store.getState().user.carts ?? []];
+                        const exist = currentCart.findIndex((x) => x.id === value.id);
+                        setItems(prevItems => prevItems.filter(x => x.id !== value.id));
+                        if (exist != -1) {
+                            dispatch(setCartInfor(currentCart?.filter(x => x.id !== value.id)));
+                        }
+                        refModalLoading.current?.hideModal?.();
+                    }, 300); 
                 }
             },
         ]);
@@ -120,9 +126,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
             setLoading(true);
             setItems(() => [...items, ...DATA.slice(LIMIT * (refCurrentIndex.current - 1), LIMIT * refCurrentIndex.current)]);
             refCurrentIndex.current += 1;
-            setTimeout(() => {
-                setLoading(false);
-            }, 1000);
+            setLoading(false);
         }
     }
 
@@ -149,7 +153,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                 />}
                 ListFooterComponent={() => <ActivityIndicator color={Colors.red} size={'small'}  style={{marginVertical: 16}}/>}
             />
-            
+
             <TouchableOpacity
                 onPress={() => setVisible(true)}
                 style={styles.btnAdd}>
@@ -175,7 +179,7 @@ const HomeScreen = ({ navigation, route }: StackScreenProps<HomeParamsList, 'Hom
                 onAdd={_onAdd}
                 onEdit={_onChange}
             />
-
+            <ModalLoading ref={refModalLoading}/>
         </View>
     );
 }

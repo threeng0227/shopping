@@ -1,6 +1,6 @@
 
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Alert, View, Text, FlatList, StyleSheet, Image, TextInput } from 'react-native';
+import { Alert, View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
 import { StackScreenProps } from "@react-navigation/stack";
 import { HomeParamsList } from "domain/types/Navigation";
 import { useAppSelector } from "redux/store/hooks";
@@ -11,10 +11,8 @@ import RemixIcon from "react-native-remix-icon";
 import { NavigationService } from "services/NavigationService";
 import { Colors } from "constants/colors.constants";
 import { ButtonComponent } from "../components/ButtonComponent";
-import { AppImages } from "constants/images.constants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CartItem } from "../components/CartItem";
-import { current } from "@reduxjs/toolkit";
 import { store } from "redux/store";
 
 const CartScreen = ({ }: StackScreenProps<HomeParamsList, 'CartScreen'>) => {
