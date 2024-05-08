@@ -21,9 +21,9 @@ export const ProductItem = memo(({
                 <TouchableOpacity
                     activeOpacity={.75}
                     onPress={() => onDelete(item)}
-                    style={styles.action}
+                    style={[styles.action, styles.bgRed]}
                 >
-                    <Text style={[styles.actionText, styles.bgRed]}>
+                    <Text style={styles.actionText}>
                         {'Delete'}
                     </Text>
                 </TouchableOpacity>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     bgRed: {
-        backgroundColor: Colors.red
+        backgroundColor: Colors.red,
     },
     flex1: {
         flex: 1

@@ -49,6 +49,63 @@ const ChangeProfileScreen = () => {
     NavigationService.goBack();
   };
 
+  const _renderForm = ({
+    handleChange,
+    handleSubmit,
+    touched,
+    values,
+    errors,
+  }: {
+    handleChange: any,
+    handleSubmit: any,
+    touched: any,
+    values: any,
+    errors: any,
+  }) => (
+    <View style={styles.content}>
+      <TextInputForm
+        title={'Name'}
+        error={touched.name && errors.name}
+        onChangeText={handleChange('name')}
+        value={values.name}
+        containerStyles={styles.marginTop20}
+      />
+      <DateTimePicker
+        containerStyles={styles.marginTop20}
+        onChange={handleChange('birthday')}
+        value={values.birthday}
+        title={'Birthday'}
+      />
+      <TextInputForm
+        title={'Email Address'}
+        error={touched.email && errors.email}
+        onChangeText={handleChange('email')}
+        value={values.email}
+        containerStyles={styles.marginTop20}
+      />
+      <TextInputForm
+        title={'Phone Number'}
+        error={touched.phone && errors.phone}
+        onChangeText={handleChange('phone')}
+        value={values.phone}
+        containerStyles={styles.marginTop20}
+      />
+      <TextInputForm
+        title={'Address'}
+        error={touched.address && errors.address}
+        onChangeText={handleChange('address')}
+        value={values.address}
+        containerStyles={styles.marginTop20}
+      />
+      <TouchableOpacity
+        onPress={() => handleSubmit()}
+        style={styles.btnUpdate}
+      >
+        <Text style={styles.txtUpdate}>{user?.name ? 'Update' : 'Register'}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View
@@ -72,57 +129,7 @@ const ChangeProfileScreen = () => {
           initialValues={initState}
           onSubmit={(values) => _onSubmit(values)}
         >
-          {({
-            handleChange,
-            setFieldValue,
-            handleSubmit,
-            touched,
-            values,
-            errors,
-          }) => (
-            <View style={styles.content}>
-              <TextInputForm
-                title={'Name'}
-                error={touched.name && errors.name}
-                onChangeText={handleChange('name')}
-                value={values.name}
-                containerStyles={styles.marginTop20}
-              />
-              <DateTimePicker
-                containerStyles={styles.marginTop20}
-                onChange={handleChange('birthday')}
-                value={values.birthday}
-                title={'Birthday'}
-              />
-              <TextInputForm
-                title={'Email Address'}
-                error={touched.email && errors.email}
-                onChangeText={handleChange('email')}
-                value={values.email}
-                containerStyles={styles.marginTop20}
-              />
-              <TextInputForm
-                title={'Phone Number'}
-                error={touched.phone && errors.phone}
-                onChangeText={handleChange('phone')}
-                value={values.phone}
-                containerStyles={styles.marginTop20}
-              />
-              <TextInputForm
-                title={'Address'}
-                error={touched.address && errors.address}
-                onChangeText={handleChange('address')}
-                value={values.address}
-                containerStyles={styles.marginTop20}
-              />
-              <TouchableOpacity
-                onPress={() => handleSubmit()}
-                style={styles.btnUpdate}
-              >
-                <Text style={styles.txtUpdate}>{user?.name ? 'Update' : 'Register'}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          {_renderForm}
         </Formik>
       </ScrollView>
     </View>
